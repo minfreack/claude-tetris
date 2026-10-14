@@ -135,9 +135,14 @@ function softDrop() {
   }
 }
 
+let combo, maxCombo;
+
 function lockPiece() {
   merge();
+  const linesBefore = lines;
   clearLines();
+  combo = lines > linesBefore ? combo + 1 : 0;
+  if (combo > maxCombo) maxCombo = combo;
   spawn();
 }
 
@@ -219,10 +224,12 @@ function drawNext() {
 }
 
 function endGame() {
+  if (gameOver) return;
   gameOver = true;
   cancelAnimationFrame(animId);
   overlayTitle.textContent = 'GAME OVER';
   overlayScore.textContent = `Puntuación: ${score.toLocaleString()}`;
+  showGameOverRecords();
   overlay.classList.remove('hidden');
 }
 
@@ -253,11 +260,14 @@ function loop(ts) {
     }
   }
   draw();
-  animId = requestAnimationFrame(loop);
+  if (!gameOver) animId = requestAnimationFrame(loop);
 }
 
 function init() {
   board = createBoard();
+  combo = 0;
+  maxCombo = 0;
+  hideGameOverRecords();
   score = 0;
   lines = 0;
   level = 1;
@@ -275,6 +285,7 @@ function init() {
 }
 
 document.addEventListener('keydown', e => {
+  if (!current || e.target instanceof HTMLInputElement) return;
   if (e.code === 'KeyP') { togglePause(); return; }
   if (paused || gameOver) return;
   switch (e.code) {
@@ -301,4 +312,4 @@ document.addEventListener('keydown', e => {
 
 restartBtn.addEventListener('click', init);
 
-init();
+showStartScreen();
