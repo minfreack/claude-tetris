@@ -69,9 +69,12 @@ const SKINS = {
       skinRoundRect(context, px + 1.5, py + 1.5, size - 3, size - 3, radius);
       context.fillStyle = color;
       context.fill();
+      // el contorno no baja de 0.6 para que el fantasma se vea sobre fondo claro
+      context.globalAlpha = Math.max(alpha, 0.6);
       context.strokeStyle = 'rgba(80,60,100,0.3)';
       context.lineWidth = 1;
       context.stroke();
+      context.globalAlpha = alpha;
       skinRoundRect(context, px + 4, py + 4, size - 8, (size - 8) * 0.38, radius * 0.6);
       context.fillStyle = 'rgba(255,255,255,0.4)';
       context.fill();

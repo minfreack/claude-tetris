@@ -152,6 +152,12 @@ kbd {
 }
 
 /* ---- Skins ---- */
+/* por encima de los overlays: la skin se puede cambiar en pausa y en game over */
+.skin-section {
+  position: relative;
+  z-index: 10;
+}
+
 #skin-select {
   width: 100%;
   background: #22223a;
